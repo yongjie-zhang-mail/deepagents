@@ -14,6 +14,7 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "tavily-python>=0.5.0",
     "rich>=13.0.0",
+    "langchain-deepseek>=1.0.1",
 ]
 
 [project.urls]
@@ -23,5 +24,11 @@ Repository = "https://github.com/langchain-ai/deepagents/tree/main/examples/text
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+packages.find = {where = ["."]}
+
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
+
+[dependency-groups]
+dev = []

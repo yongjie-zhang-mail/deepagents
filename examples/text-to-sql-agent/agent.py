@@ -2,7 +2,7 @@ import argparse
 import os
 import sys
 
-from langchain.chat_models import init_chat_model
+from langchain_deepseek import ChatDeepSeek
 from deepagents import create_deep_agent
 from deepagents.backends import FilesystemBackend
 from dotenv import load_dotenv
@@ -28,9 +28,13 @@ def create_sql_deep_agent():
     db_path = os.path.join(base_dir, "chinook.db")
     db = SQLDatabase.from_uri(f"sqlite:///{db_path}", sample_rows_in_table_info=3)
 
-    # Initialize Claude Sonnet 4.5 for toolkit initialization
     # model = ChatAnthropic(model="claude-sonnet-4-5-20250929", temperature=0)
-    model = init_chat_model(model="deepseek-chat", temperature=0.0)
+    # Initialize deepseek-v4-flash model in non-thinking mode
+    model = ChatDeepSeek(
+        model="deepseek-v4-flash",
+        temperature=0,
+        extra_body={"thinking": {"type": "disabled"}},
+    )
 
     # Create SQL toolkit and get tools
     toolkit = SQLDatabaseToolkit(db=db, llm=model)
