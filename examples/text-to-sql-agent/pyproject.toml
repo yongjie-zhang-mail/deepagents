@@ -15,6 +15,7 @@ dependencies = [
     "tavily-python>=0.5.0",
     "rich>=13.0.0",
     "langchain-deepseek>=1.0.1",
+    "langgraph-cli[inmem]>=0.1.55",
 ]
 
 [project.urls]
