@@ -48,6 +48,12 @@ def create_sql_deep_agent():
             "./skills/"
         ],  # Specialized workflows (query-writing, schema-exploration)
         tools=sql_tools,  # SQL database tools
+        # interrupt_on={
+        #     "query_sql_database_tool": True,  # Default: approve, edit, reject
+        # },
+        interrupt_on={
+            "sql_db_query": True,  # Default: approve, edit, reject
+        },
         subagents=[],  # No subagents needed
         backend=FilesystemBackend(root_dir=base_dir),  # Persistent file storage
     )
@@ -115,5 +121,5 @@ Examples:
 # Expose agent at module level for LangGraph API server (`langgraph dev`)
 agent = create_sql_deep_agent()
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
