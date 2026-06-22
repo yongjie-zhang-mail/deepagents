@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+from urllib.parse import quote_plus
 
 from langchain_deepseek import ChatDeepSeek
 from deepagents import create_deep_agent
@@ -18,6 +19,18 @@ load_dotenv()
 console = Console()
 
 
+def _build_pg_uri() -> str:
+    """Build a PostgreSQL SQLAlchemy URI from env vars, with clear errors."""
+    user = os.getenv("DB_USER", "")
+    pwd = os.getenv("DB_PWD", "")
+    host = os.getenv("DB_HOST", "")
+    dbname = os.getenv("DB_NAME", "")
+    port = os.getenv("DB_PORT", "")
+
+    # URL-encode user/password so special chars (~ @ : / # etc.) are safe.
+    return f"postgresql+psycopg://{quote_plus(user)}:{quote_plus(pwd)}@{host}:{port}/{dbname}"
+
+
 def create_sql_deep_agent():
     """Create and return a text-to-SQL Deep Agent"""
 
@@ -25,8 +38,9 @@ def create_sql_deep_agent():
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     # Connect to Chinook database
-    db_path = os.path.join(base_dir, "chinook.db")
-    db = SQLDatabase.from_uri(f"sqlite:///{db_path}", sample_rows_in_table_info=3)
+    # db_path = os.path.join(base_dir, "chinook.db")
+    # db = SQLDatabase.from_uri(f"sqlite:///{db_path}", sample_rows_in_table_info=3)
+    db = SQLDatabase.from_uri(_build_pg_uri(), sample_rows_in_table_info=3)
 
     # model = ChatAnthropic(model="claude-sonnet-4-5-20250929", temperature=0)
     # Initialize deepseek-v4-flash model in non-thinking mode
@@ -48,11 +62,8 @@ def create_sql_deep_agent():
             "./skills/"
         ],  # Specialized workflows (query-writing, schema-exploration)
         tools=sql_tools,  # SQL database tools
-        # interrupt_on={
-        #     "query_sql_database_tool": True,  # Default: approve, edit, reject
-        # },
         interrupt_on={
-            "sql_db_query": True,  # Default: approve, edit, reject
+            "sql_db_schema": True,  # Default: approve, edit, reject
         },
         subagents=[],  # No subagents needed
         backend=FilesystemBackend(root_dir=base_dir),  # Persistent file storage
