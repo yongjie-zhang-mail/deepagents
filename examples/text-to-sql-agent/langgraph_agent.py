@@ -63,7 +63,7 @@ def create_sql_deep_agent():
         ],  # Specialized workflows (query-writing, schema-exploration)
         tools=sql_tools,  # SQL database tools
         interrupt_on={
-            "sql_db_schema": True,  # Default: approve, edit, reject
+            "write_file": True,  # Default: approve, edit, reject
         },
         subagents=[],  # No subagents needed
         backend=FilesystemBackend(root_dir=base_dir),  # Persistent file storage
