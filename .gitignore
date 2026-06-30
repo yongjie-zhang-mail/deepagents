@@ -226,3 +226,9 @@ libs/cli/TEXTUAL_PROGRESS.md
 */tmp/.DS_Store
 
 CLAUDE.md
+
+
+# ignore no-use files
+*.sql
+
+

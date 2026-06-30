@@ -82,6 +82,17 @@
       "driver": "SQLite",
       "name": "2",
       "database": "${workspaceFolder:deepagents}/examples/text-to-sql-agent/chinook.db"
+    },
+    {
+      "ssh": "Disabled",
+      "previewLimit": 50,
+      "server": "10.195.7.149",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "test_db",
+      "database": "ai_center_portal",
+      "username": "a_appconnect",
+      "password": "cyTnGk~1qFj7"
     }
   ]
 }
